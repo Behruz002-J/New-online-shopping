@@ -1,33 +1,46 @@
-import Black from "../assets/Icons/Black.svg";
-import Twitter from "../assets/Icons/Twitter.svg";
-import Facebook from "../assets/Icons/Facebook.svg";
-import Pinterest from "../assets/Icons/Pinterest.svg";
-import Youtube from "../assets/Icons/Youtube.svg";
-import Instagram from "../assets/Icons/Instagram.svg";
-import Logo from "../assets/Logo/clicon.svg";
-import Search from "../assets/Icons/search.svg";
-import Cart from "../assets/Icons/ShoppingCartSimple.svg";
-import Heart from "../assets/Icons/Heart.svg";
-import User from "../assets/Icons/User.svg";
-import Info from "../assets/Icons/Info.svg";
-import PhoneCall from "../assets/Icons/PhoneCall.svg";
-import HeadPones from "../assets/Icons/Headphones.svg";
-import Clockwise from "../assets/Icons/Clockwise.svg";
-import Location from "../assets/Icons/MapPinLine.svg";
+import Black from "../assets/icons/Black.svg";
+import Twitter from "../assets/icons/Twitter.svg";
+import Facebook from "../assets/icons/Facebook.svg";
+import Pinterest from "../assets/icons/Pinterest.svg";
+import Youtube from "../assets/icons/Youtube.svg";
+import Instagram from "../assets/icons/Instagram.svg";
+import Logo from "../assets/logos/clicon.svg";
+import Search from "../assets/icons/search.svg";
+import Cart from "../assets/icons/ShoppingCartSimple.svg";
+import Heart from "../assets/icons/Heart.svg";
+import User from "../assets/icons/User.svg";
+import Info from "../assets/icons/Info.svg";
+import PhoneCall from "../assets/icons/PhoneCall.svg";
+import HeadPones from "../assets/icons/Headphones.svg";
+import Clockwise from "../assets/icons/Clockwise.svg";
+import Location from "../assets/icons/MapPinLine.svg";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-
-const containerClass = "mx-auto max-w-[1320px] px-4 sm:px-6 xl:px-0";
+import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { containerClass } from "./Container";
 
 export default function Navbar() {
   const [visible, setVisible] = useState(true);
+  const [cartCount, setCartCount] = useState(() => {
+    return Number(localStorage.getItem("cart-count") ?? 0);
+  });
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      setCartCount(Number(localStorage.getItem("cart-count") ?? 0));
+    };
+
+    window.addEventListener("cart-updated", updateCartCount);
+    return () => window.removeEventListener("cart-updated", updateCartCount);
+  }, []);
+
   if (!visible) return null;
 
   return (
     <header className="w-full bg-[#1b6392] text-white">
       <div className="w-full bg-zinc-900 text-white">
         <div
-          className={`${containerClass} flex h-12 items-center justify-between`}
+          className={`${containerClass} relative flex h-12 items-center justify-between`}
         >
           <div className="flex items-center gap-3">
             <img src={Black} alt="" />
@@ -42,17 +55,17 @@ export default function Navbar() {
             <span className="text-sm font-semibold">OFF</span>
           </div>
 
-          <div className="flex min-w-fit items-center gap-4">
+          <div className="flex min-w-fit items-center gap-4 pr-16">
             <Link
               to="/shoppage"
-              className="flex h-9 w-[156px] items-center justify-center gap-1.5 whitespace-nowrap rounded-sm bg-yellow-400 px-7 text-xs font-bold text-black transition-colors hover:bg-yellow-300"
+              className="flex h-10 w-[134px] items-center justify-center gap-2 whitespace-nowrap rounded-none bg-[#f5d20a] text-xs font-extrabold uppercase text-[#191c1f] transition-colors hover:bg-[#eac800]"
             >
               SHOP NOW
-              <span className="text-sm">-&gt;</span>
+              <ArrowRight size={16} strokeWidth={2.4} />
             </Link>
             <button
               onClick={() => setVisible(false)}
-              className="bg-zinc-600 px-1.5 py-0.5 text-base leading-none transition-colors hover:text-white"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-zinc-600 px-1.5 py-0.5 text-base leading-none transition-colors hover:text-white sm:right-0 xl:-right-12"
               aria-label="close"
             >
               x
@@ -190,9 +203,14 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <button
             aria-label="Cart"
-            className="rounded p-2 focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="relative rounded p-2 focus:outline-none focus:ring-2 focus:ring-white/40"
           >
             <img src={Cart} alt="Cart" className="h-5 w-5" />
+            {cartCount > 0 ? (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[#1b6392] bg-white px-1 text-xs font-bold leading-none text-[#1b6392]">
+                {cartCount}
+              </span>
+            ) : null}
           </button>
           <button
             aria-label="Wishlist"
