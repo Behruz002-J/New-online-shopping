@@ -16,11 +16,10 @@ import Clockwise from "../assets/icons/Clockwise.svg";
 import Location from "../assets/icons/MapPinLine.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import { containerClass } from "./Container";
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(true);
   const [cartCount, setCartCount] = useState(() => {
     return Number(localStorage.getItem("cart-count") ?? 0);
   });
@@ -34,28 +33,28 @@ export default function Navbar() {
     return () => window.removeEventListener("cart-updated", updateCartCount);
   }, []);
 
-  if (!visible) return null;
-
   return (
     <header className="w-full bg-[#1b6392] text-white">
-      <div className="w-full bg-zinc-900 text-white">
+      <div className="w-full bg-zinc-900 text-white h-[80px] pt-[16px]">
         <div
-          className={`${containerClass} relative flex h-12 items-center justify-between`}
+          className={`${containerClass} flex h-12 items-center justify-between`}
         >
           <div className="flex items-center gap-3">
             <img src={Black} alt="" />
             <span className="text-sm font-medium tracking-wide">Friday</span>
           </div>
 
-          <div className="hidden items-baseline gap-1 sm:flex">
-            <span className="text-sm">Up to</span>
-            <span className="text-2xl font-extrabold tracking-tight text-yellow-400">
+          <div className="hidden flex-1 justify-center items-center gap-2 sm:flex">
+            <span className="text-[14px] leading-none pt-[4px]">Up to</span>
+            <span className="text-4xl font-bold leading-none tracking-tight text-yellow-400">
               59%
             </span>
-            <span className="text-sm font-semibold">OFF</span>
+            <span className="text-[20px] font-semibold leading-none pt-[4px]">
+              OFF
+            </span>
           </div>
 
-          <div className="flex min-w-fit items-center gap-4 pr-16">
+          <div className="flex items-center gap-4">
             <Link
               to="/shoppage"
               className="flex h-10 w-[134px] items-center justify-center gap-2 whitespace-nowrap rounded-none bg-[#f5d20a] text-xs font-extrabold uppercase text-[#191c1f] transition-colors hover:bg-[#eac800]"
@@ -63,13 +62,6 @@ export default function Navbar() {
               SHOP NOW
               <ArrowRight size={16} strokeWidth={2.4} />
             </Link>
-            <button
-              onClick={() => setVisible(false)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-zinc-600 px-1.5 py-0.5 text-base leading-none transition-colors hover:text-white sm:right-0 xl:-right-12"
-              aria-label="close"
-            >
-              x
-            </button>
           </div>
         </div>
       </div>
@@ -167,7 +159,7 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`${containerClass} flex h-20 items-center justify-between`}
+        className={`${containerClass} flex h-[80px] items-center justify-between`}
       >
         <div className="flex items-center gap-4">
           <Link to="/" aria-label="Home">
@@ -233,10 +225,11 @@ export default function Navbar() {
             <li>
               <button
                 type="button"
-                className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 shadow-sm hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-3 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
               >
-                <img src={Clockwise} alt="All Category" className="h-4 w-4" />
-                <span className="hidden sm:inline">All Category</span>
+                <Menu className="h-4 w-4 text-slate-500" />
+                <span className="text-sm font-medium">All Category</span>
+                <ChevronDown className="h-4 w-4 text-slate-500" />
               </button>
             </li>
             <li>

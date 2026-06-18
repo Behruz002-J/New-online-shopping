@@ -100,7 +100,7 @@ function Rating({
 
 function FeaturedProduct() {
   return (
-    <section className="mt-12 bg-white">
+    <section className="mt-12 bg-white pb-20">
       <div
         className={`${containerClass} grid gap-6 lg:grid-cols-[312px_minmax(0,1fr)]`}
       >

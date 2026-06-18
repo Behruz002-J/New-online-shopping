@@ -1,4 +1,11 @@
-import { ArrowRight, Eye, Heart, ShoppingCart, Star } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Eye,
+  Heart,
+  ShoppingCart,
+  Star,
+} from "lucide-react";
 import { useState } from "react";
 import { containerClass } from "../../components/Container";
 import Airpods from "../../assets/images/airpods.png";
@@ -9,6 +16,33 @@ import Headphones from "../../assets/icons/Headphones.svg";
 import Package from "../../assets/icons/Package.svg";
 import Trophy from "../../assets/icons/Trophy.svg";
 import FeaturedProduct from "./FeaturedProduct";
+
+const shopCategories = [
+  {
+    title: "Computer & Laptop",
+    image: Airpods,
+  },
+  {
+    title: "SmartPhone",
+    image: Phone,
+  },
+  {
+    title: "Headphones",
+    image: Playstation,
+  },
+  {
+    title: "Accessories",
+    image: Airpods,
+  },
+  {
+    title: "Camera & Photo",
+    image: Phone,
+  },
+  {
+    title: "TV & Homes",
+    image: Playstation,
+  },
+];
 
 const services = [
   {
@@ -399,6 +433,49 @@ function BestDeals() {
                     </span>
                   </div>
                 </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-12 relative">
+          <div className="mb-6 flex flex-col items-center gap-4">
+            <h2 className="text-2xl font-semibold text-[#191c1f] text-center">
+              Shop with Categorys
+            </h2>
+          </div>
+
+          <div className="relative">
+            <button
+              type="button"
+              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-3 text-slate-600 shadow-sm transition hover:bg-slate-50"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <button
+              type="button"
+              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-3 text-slate-600 shadow-sm transition hover:bg-slate-50"
+            >
+              <ArrowRight size={18} />
+            </button>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              {shopCategories.map((category) => (
+                <div
+                  key={category.title}
+                  className="group overflow-hidden border border-slate-200 bg-white text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  <div className="p-6">
+                    <img
+                      src={category.image}
+                      alt={category.title}
+                      className="mx-auto h-[205px] w-[236px] object-contain"
+                    />
+                  </div>
+                  <div className="px-4 py-4">
+                    <p className="text-sm font-semibold">{category.title}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
