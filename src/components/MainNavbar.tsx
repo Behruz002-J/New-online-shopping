@@ -12,9 +12,10 @@ import User from "../assets/icons/User.svg";
 import PhoneCall from "../assets/icons/PhoneCall.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { ArrowRight, ChevronDown, House, Menu,ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, House, ChevronRight } from "lucide-react";
 import { containerClass } from "./Container";
 import AuthDropdown from "./AuthDropdown";
+import CategoryMegaMenu from "./CategoryMegaMenu";
 
 const MapPinIcon = ({ className }: { className?: string }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -53,6 +54,8 @@ export default function Navbar() {
   const isShopPage = location.pathname === "/shoppage";
   const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
   const authTriggerRef = useRef<HTMLButtonElement>(null);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const megaMenuTriggerRef = useRef<HTMLButtonElement>(null);
 
   const [cartCount, setCartCount] = useState(() => {
     return Number(localStorage.getItem("cart-count") ?? 0);
@@ -266,16 +269,25 @@ export default function Navbar() {
       </div>
 
       <div className="bg-white text-slate-700">
-        <nav aria-label="Utilities" className={containerClass}>
+        <nav aria-label="Utilities" className={`${containerClass} relative`}>
           <ul className="flex items-center gap-4 py-3 text-sm">
             <li>
               <button
+                ref={megaMenuTriggerRef}
+                onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-3 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                className={`inline-flex items-center gap-2.5 rounded-[4px] px-6 py-3.5 text-sm font-semibold transition-colors cursor-pointer focus:outline-none ${
+                  isMegaMenuOpen
+                    ? "bg-[#FA8232] text-white"
+                    : "bg-[#F2F4F5] text-[#191C1F] hover:bg-slate-200"
+                }`}
               >
-                <Menu className="h-4 w-4 text-slate-500" />
-                <span className="text-sm font-medium">All Category</span>
-                <ChevronDown className="h-4 w-4 text-slate-500" />
+                <span>All Category</span>
+                {isMegaMenuOpen ? (
+                  <ChevronUp className="h-4 w-4 text-white" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-[#5F6C72]" />
+                )}
               </button>
             </li>
             <li>
@@ -340,6 +352,12 @@ export default function Navbar() {
               </a>
             </li>
           </ul>
+          {isMegaMenuOpen && (
+            <CategoryMegaMenu
+              onClose={() => setIsMegaMenuOpen(false)}
+              triggerRef={megaMenuTriggerRef}
+            />
+          )}
         </nav>
 
          <div className="bg-gray-100 py-6">
