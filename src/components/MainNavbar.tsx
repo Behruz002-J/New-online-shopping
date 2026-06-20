@@ -9,17 +9,51 @@ import Search from "../assets/icons/search.svg";
 import Cart from "../assets/icons/ShoppingCartSimple.svg";
 import Heart from "../assets/icons/Heart.svg";
 import User from "../assets/icons/User.svg";
-import Info from "../assets/icons/Info.svg";
 import PhoneCall from "../assets/icons/PhoneCall.svg";
-import HeadPones from "../assets/icons/Headphones.svg";
-import Clockwise from "../assets/icons/Clockwise.svg";
-import Location from "../assets/icons/MapPinLine.svg";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, Menu } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { ArrowRight, ChevronDown, House, Menu,ChevronRight } from "lucide-react";
 import { containerClass } from "./Container";
+import AuthDropdown from "./AuthDropdown";
+
+const MapPinIcon = ({ className }: { className?: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M5.25 21.75H18.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M19.5 9.75C19.5 16.5 12 21.75 12 21.75C12 21.75 4.5 16.5 4.5 9.75C4.5 7.76088 5.29018 5.85322 6.6967 4.4467C8.10322 3.04018 10.0109 2.25 12 2.25C13.9891 2.25 15.8968 3.04018 17.3033 4.4467C18.7098 5.85322 19.5 7.76088 19.5 9.75V9.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 12.75C13.6569 12.75 15 11.4069 15 9.75C15 8.09315 13.6569 6.75 12 6.75C10.3431 6.75 9 8.09315 9 9.75C9 11.4069 10.3431 12.75 12 12.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const CompareIcon = ({ className }: { className?: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M7.48126 9.34668H2.98126V4.84668" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M17.8313 6.16885C17.0659 5.40236 16.1569 4.79429 15.1563 4.37941C14.1558 3.96453 13.0832 3.75098 12 3.75098C10.9168 3.75098 9.84427 3.96453 8.84369 4.37941C7.8431 4.79429 6.93413 5.40236 6.16876 6.16885L2.98126 9.34698" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M16.5187 14.6533H21.0187V19.1533" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6.16876 17.8314C6.93413 18.5979 7.8431 19.206 8.84368 19.6209C9.84427 20.0358 10.9168 20.2493 12 20.2493C13.0832 20.2493 14.1558 20.0358 15.1563 19.6209C16.1569 19.206 17.0659 18.5979 17.8313 17.8314L21.0188 14.6533" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const SupportIcon = ({ className }: { className?: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M21.1406 12.7503H18.1406C17.7428 12.7503 17.3613 12.9083 17.08 13.1897C16.7987 13.471 16.6406 13.8525 16.6406 14.2503V18.0003C16.6406 18.3981 16.7987 18.7797 17.08 19.061C17.3613 19.3423 17.7428 19.5003 18.1406 19.5003H19.6406C20.0384 19.5003 20.42 19.3423 20.7013 19.061C20.9826 18.7797 21.1406 18.3981 21.1406 18.0003V12.7503ZM21.1406 12.7503C21.1407 11.5621 20.9054 10.3856 20.4484 9.28875C19.9915 8.1919 19.3218 7.1964 18.4781 6.35969C17.6344 5.52297 16.6334 4.86161 15.5328 4.41375C14.4322 3.96589 13.2538 3.74041 12.0656 3.75031C10.8782 3.74165 9.70083 3.96805 8.60132 4.41647C7.5018 4.86488 6.50189 5.52645 5.6592 6.36304C4.81651 7.19963 4.1477 8.19471 3.69131 9.29094C3.23492 10.3872 2.99997 11.5629 3 12.7503V18.0003C3 18.3981 3.15804 18.7797 3.43934 19.061C3.72064 19.3423 4.10218 19.5003 4.5 19.5003H6C6.39782 19.5003 6.77936 19.3423 7.06066 19.061C7.34196 18.7797 7.5 18.3981 7.5 18.0003V14.2503C7.5 13.8525 7.34196 13.471 7.06066 13.1897C6.77936 12.9083 6.39782 12.7503 6 12.7503H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const HelpIcon = ({ className }: { className?: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M11.25 11.25H12V16.5H12.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M11.8125 7.5C12.0196 7.5 12.1875 7.66789 12.1875 7.875C12.1875 8.08211 12.0196 8.25 11.8125 8.25C11.6054 8.25 11.4375 8.08211 11.4375 7.875C11.4375 7.66789 11.6054 7.5 11.8125 7.5Z" fill="currentColor" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
 
 export default function Navbar() {
+  const location = useLocation();
+  const isShopPage = location.pathname === "/shoppage";
+  const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
+  const authTriggerRef = useRef<HTMLButtonElement>(null);
+
   const [cartCount, setCartCount] = useState(() => {
     return Number(localStorage.getItem("cart-count") ?? 0);
   });
@@ -55,13 +89,15 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Link
-              to="/shoppage"
-              className="flex h-10 w-[134px] items-center justify-center gap-2 whitespace-nowrap rounded-none bg-[#f5d20a] text-xs font-extrabold uppercase text-[#191c1f] transition-colors hover:bg-[#eac800]"
-            >
-              SHOP NOW
-              <ArrowRight size={16} strokeWidth={2.4} />
-            </Link>
+            {!isShopPage ? (
+              <Link
+                to="/shoppage"
+                className="flex h-10 w-[134px] items-center justify-center gap-2 whitespace-nowrap rounded-none bg-[#f5d20a] text-xs font-extrabold uppercase text-[#191c1f] transition-colors hover:bg-[#eac800]"
+              >
+                SHOP NOW
+                <ArrowRight size={16} strokeWidth={2.4} />
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>
@@ -210,12 +246,22 @@ export default function Navbar() {
           >
             <img src={Heart} alt="Wishlist" className="h-5 w-5" />
           </button>
-          <button
-            aria-label="Account"
-            className="rounded p-2 focus:outline-none focus:ring-2 focus:ring-white/40"
-          >
-            <img src={User} alt="User" className="h-5 w-5" />
-          </button>
+          <div className="relative">
+            <button
+              ref={authTriggerRef}
+              onClick={() => setIsAuthDropdownOpen(!isAuthDropdownOpen)}
+              aria-label="Account"
+              className="rounded p-2 focus:outline-none focus:ring-2 focus:ring-white/40 hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              <img src={User} alt="User" className="h-5 w-5" />
+            </button>
+            {isAuthDropdownOpen && (
+              <AuthDropdown
+                onClose={() => setIsAuthDropdownOpen(false)}
+                triggerRef={authTriggerRef}
+              />
+            )}
+          </div>
         </div>
       </div>
 
@@ -234,36 +280,55 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                to="/track-order"
-                className="flex items-center gap-2 text-sm hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                to="/trackorder"
+                className={`flex items-center gap-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 ${
+                  location.pathname === "/trackorder"
+                    ? "text-[#FA8232]"
+                    : "text-[#5F6C72] hover:text-[#FA8232]"
+                }`}
               >
-                <img src={Location} alt="Track order" />
+                <MapPinIcon className="h-5 w-5" />
                 <span className="hidden sm:inline">Track Order</span>
               </Link>
             </li>
             <li>
               <Link
                 to="/compare"
-                className="flex items-center gap-2 text-sm hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                className={`flex items-center gap-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 ${
+                  location.pathname === "/compare"
+                    ? "text-[#FA8232]"
+                    : "text-[#5F6C72] hover:text-[#FA8232]"
+                }`}
               >
-                <img src={Clockwise} alt="Compare" />
+                <CompareIcon className="h-5 w-5" />
                 <span className="hidden sm:inline">Compare</span>
               </Link>
             </li>
             <li>
               <Link
                 to="/support"
-                className="flex items-center gap-2 text-sm hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                className={`flex items-center gap-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 ${
+                  location.pathname === "/support"
+                    ? "text-[#FA8232]"
+                    : "text-[#5F6C72] hover:text-[#FA8232]"
+                }`}
               >
-                <img src={HeadPones} alt="Customer Support" />
+                <SupportIcon className="h-5 w-5" />
                 <span className="hidden sm:inline">Customer Support</span>
               </Link>
             </li>
             <li>
-              <span className="flex cursor-pointer items-center gap-2 text-sm hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500">
-                <img src={Info} alt="Need Help" />
+              <Link
+                to="/help"
+                className={`flex items-center gap-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 ${
+                  location.pathname === "/help"
+                    ? "text-[#FA8232]"
+                    : "text-[#5F6C72] hover:text-[#FA8232]"
+                }`}
+              >
+                <HelpIcon className="h-5 w-5" />
                 <span className="hidden sm:inline">Need Help</span>
-              </span>
+              </Link>
             </li>
             <li className="ml-auto flex items-center gap-2 text-sm text-slate-600">
               <img src={PhoneCall} alt="Phone" />
@@ -276,6 +341,26 @@ export default function Navbar() {
             </li>
           </ul>
         </nav>
+
+         <div className="bg-gray-100 py-6">
+      <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 text-sm">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-gray-500 hover:text-blue-500"
+        >
+          <House size={16} />
+          <span>Home</span>
+        </Link>
+
+        <ChevronRight size={16} className="text-gray-400" />
+
+        <span className="text-gray-500">Pages</span>
+
+        <ChevronRight size={16} className="text-gray-400" />
+
+        <Link to={"/trackorder"} className="font-medium text-sky-500">Track Order</Link>
+      </div>
+    </div>
       </div>
     </header>
   );
